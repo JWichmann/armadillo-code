@@ -3707,9 +3707,7 @@ auxlib::solve_band_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
   {
   arma_extra_debug_sigprint();
   
-  // AB = matrix A in band storage
-  // in rows KL+1 to 2*KL+KU+1; rows 1 to KL of the array need not be set.
-  // NOTE: this requirement is different to ?gbsvx
+  // for gbsv, matrix AB size: 2*KL+KU+1 x N; band representation of A stored in rows KL+1 to 2*KL+KU+1  (note: fortran counts from 1)
   
   typedef typename T1::elem_type eT;
   
@@ -3769,6 +3767,8 @@ auxlib::solve_band_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
 // auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& AB, const uword KL, const uword KU, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
 //   {
 //   arma_extra_debug_sigprint();
+//   
+//   // for gbsvx, matrix AB size: KL+KU+1 x N; band representaiton of A stored in rows 1 to KL+KU+1  (note: fortran counts from 1)
 //   
 //   #if defined(ARMA_USE_LAPACK)
 //     {
