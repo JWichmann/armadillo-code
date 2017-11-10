@@ -199,8 +199,7 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
   
   // if we reached this point, go through the entire matrix to work out number of subdiagonals and superdiagonals
   
-  //const uword n_nonzero_threshold = (N*N)/4;
-  const uword n_nonzero_threshold = (N*N);
+  const uword n_nonzero_threshold = (N*N)/4;
   
   uword KL = 0;  // number of   subdiagonals
   uword KU = 0;  // number of superdiagonals
