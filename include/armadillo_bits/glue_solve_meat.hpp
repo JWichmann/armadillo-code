@@ -198,20 +198,19 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
   
   if( (A_colNm2[0] != eT_zero) || (A_colNm1[0] != eT_zero) || (A_colNm1[1] != eT_zero) )  { return false; }
   
-  
   // if we reached this point, go through the entire matrix to work out number of subdiagonals and superdiagonals
+  
+  const uword n_nonzero_threshold = (N*N)/4;
   
   uword KL = 0;  // number of   subdiagonals
   uword KU = 0;  // number of superdiagonals
   
-  const uword nonzero_threshold = (N*N) / 4;
-  
   for(uword col=0; col < N; ++col)
     {
+    const eT* A_colptr = A.colptr(col);
+    
     uword first_nonzero_row = col;
     uword  last_nonzero_row = col;
-    
-    const eT* A_colptr = A.colptr(col);
     
     for(uword row=0; row < col; ++row)
       {
@@ -231,12 +230,14 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
       KL = L_count;
       KU = U_count;
       
-      const uword nonzero = N*(1 + KL + KU) - (KL*(KL+1) + KU*(KU+1)) / 2;
+      const uword n_nonzero = N*(KL+KU+1) - (KL*(KL+1) + KU*(KU+1))/2;
       
       // return as soon as we know that it's not worth analysing the matrix any further
       
-      if(nonzero > nonzero_threshold)  { return false; }
+      if(n_nonzero > n_nonzero_threshold)  { return false; }
       }
+    
+    A_colptr += N;
     }
   
   out_KL = KL;
