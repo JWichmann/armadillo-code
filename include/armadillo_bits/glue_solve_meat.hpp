@@ -82,8 +82,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       {
       if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored, as option 'fast' is enabled"); }
       
-      if(true)
-      //if(band == false)
+      if(band == false)
         {
         arma_extra_debug_print("glue_solve_gen::apply(): fast + dense");
       
@@ -182,7 +181,7 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
   
   const uword N = A.n_rows;
   
-  if(N <= 4)  { return false; }
+  if(N < 16)  { return false; }
   
   // first, quickly check bottom-right and top-left corners
   
@@ -200,7 +199,8 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
   
   // if we reached this point, go through the entire matrix to work out number of subdiagonals and superdiagonals
   
-  const uword n_nonzero_threshold = (N*N)/4;
+  //const uword n_nonzero_threshold = (N*N)/4;
+  const uword n_nonzero_threshold = (N*N);
   
   uword KL = 0;  // number of   subdiagonals
   uword KU = 0;  // number of superdiagonals
