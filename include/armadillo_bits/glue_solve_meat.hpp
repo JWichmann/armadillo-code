@@ -205,10 +205,10 @@ glue_solve_gen::get_band_counts(uword& out_KL, uword& out_KU, const Mat<eT>& A)
   uword KL = 0;  // number of   subdiagonals
   uword KU = 0;  // number of superdiagonals
   
+  const eT* A_colptr = A.memptr();
+  
   for(uword col=0; col < N; ++col)
     {
-    const eT* A_colptr = A.colptr(col);
-    
     uword first_nonzero_row = col;
     uword  last_nonzero_row = col;
     
